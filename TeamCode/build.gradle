@@ -13,3 +13,17 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
+repositories {
+    mavenCentral()
+}
+
+//TODO down from here
+configurations {
+    all*.exclude group: "xmlpull", module: "xmlpull"
+    all*.exclude group: "org.apache.commons", module: "commons-compress"
+}
+dependencies {
+    ['boofcv-android', 'boofcv-core'].each { String a -> compile group: 'org.boofcv', name: a, version: '0.28' }
+    //['ejml-all'].each { String a -> compile group: 'org.ejml', name: a, version: '0.32' }
+    //['android', 'core'].each { String a -> compile group: 'org.boofcv', name: a, version: '0.26' }
+}
