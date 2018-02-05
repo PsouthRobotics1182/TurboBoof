@@ -22,7 +22,7 @@ public class BlueJuul extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         FineBot robot = new FineBot(this, DcMotor.RunMode.RUN_USING_ENCODER, Color.BLUE);
-        CrackedMonocle vuforia = new CrackedMonocle(this);
+        CrackedMonocle vuforia = new CrackedMonocle(this, true);
         ElapsedTime runTime = new ElapsedTime();
         vuforia.activate();
 

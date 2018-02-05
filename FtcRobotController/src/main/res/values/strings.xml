@@ -38,6 +38,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <resources>
 
+        <string name="action_calibrate">Calibrate</string>
+        <string name="calibration">Calibration</string>
+        <string name="undistortion">Undistortion</string>
+        <string name="comparison">Comparison</string>
+        <string name="preview_mode">Preview mode</string>
+        <string name="calibration_successful">Successfully calibrated!\nAvg. re-projection error:</string>
+        <string name="calibration_unsuccessful">Unsuccessful calibration.\nTry again</string>
+        <string name="more_samples">Please, capture more samples</string>
+        <string name="calibrating">Calibrating...</string>
+        <string name="please_wait">Please, wait</string>
+        <string name="original">Original</string>
+        <string name="undistorted">Undistorted</string>
+
+
+
   <string name="app_name">FTC Robot Controller</string>
 
   <!-- Menu -->

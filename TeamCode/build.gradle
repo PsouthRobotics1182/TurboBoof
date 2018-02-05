@@ -26,4 +26,6 @@ dependencies {
     ['boofcv-android', 'boofcv-core'].each { String a -> compile group: 'org.boofcv', name: a, version: '0.28' }
     //['ejml-all'].each { String a -> compile group: 'org.ejml', name: a, version: '0.32' }
     //['android', 'core'].each { String a -> compile group: 'org.boofcv', name: a, version: '0.26' }
+    compile project(':DogeCV')
+    compile project(':openCVLibrary320')
 }
