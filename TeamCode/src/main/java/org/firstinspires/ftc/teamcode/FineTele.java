@@ -8,16 +8,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import lib.fine.systems.FineBot;
 import lib.fine.systems.FishinPol;
+import lib.fine.systems.SpeedyBot;
 
 /**
  * Created by drew on 11/23/17.
  */
 @TeleOp(name = "TeleOperations v2.45423")
 public class FineTele extends LinearOpMode {
-    FineBot robot;
+    SpeedyBot robot;
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new FineBot(this, DcMotor.RunMode.RUN_WITHOUT_ENCODER, Color.RED);
+        robot = new SpeedyBot(this, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.lift.grabTop(0.1);
         robot.lift.grabBottom(0.3);
         //robot.juulHitler.up();
@@ -27,46 +28,13 @@ public class FineTele extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             driveTrain();
-            bullyBois();
-            liftControl();
+            goodSucc();
             //juulHitler();
-            fishinForFishEyedFools();
             //robot.fishinPol.setPower(gamepad2.left_stick_y);
             //robot.juulHitler.addTelemetry();
 
             //telemetry.update();
         }
-    }
-
-    private void fishinForFishEyedFools() {
-        robot.fishinPol.setPower(gamepad2.left_stick_y);
-        if (gamepad2.dpad_down)
-            robot.fishinPol.rotate(0.5);
-        else if (gamepad2.dpad_up)
-            robot.fishinPol.rotate(0);
-
-        if (gamepad2.a)
-            robot.fishinPol.grab(1);
-        else if (gamepad2.b)
-            robot.fishinPol.grab(0);
-    }
-
-    private void juulHitler() {
-        if (gamepad2.dpad_up) {
-            robot.juulHitler.up(1);
-        } else if (gamepad2.dpad_down) {
-            robot.juulHitler.down();
-        }
-
-        if (gamepad2.a)
-            robot.juulHitler.hitRed();
-
-        if (gamepad2.x)
-            robot.juulHitler.left();
-        else if (gamepad2.y)
-            robot.juulHitler.middle();
-        else if (gamepad2.b)
-            robot.juulHitler.right();
     }
 
     private void driveTrain() {
@@ -89,26 +57,18 @@ public class FineTele extends LinearOpMode {
 
         robot.drive.setCrossPower(crossPower);
     }
-    private void liftControl() {
+
+    private void goodSucc() {
+        double leftPower = gamepad2.left_trigger;
+        double rightPower = gamepad2.right_trigger;
         if (gamepad2.right_bumper)
-            robot.lift.grabTop(1);
-        else if (gamepad2.left_bumper)
-            robot.lift.grabTop(0.1);
-        else if (gamepad2.right_trigger > 0.3)
-            robot.lift.grabBottom(1);
-        else if (gamepad2.left_trigger > 0.3)
-            robot.lift.grabBottom(0.3);
+            rightPower = -1;
+        if (gamepad2.left_bumper)
+            leftPower = -1;
 
-        robot.lift.lift(gamepad2.right_stick_y);
+        robot.suckyBois.setLeftPower(leftPower);
+        robot.suckyBois.setRightPower(rightPower);
     }
 
-    private void bullyBois() {
-        robot.reversePullBois.in();
-        if (gamepad1.right_bumper)
-            robot.reversePullBois.powerLift(-0.8);
-        else if (gamepad1.left_bumper)
-            robot.reversePullBois.powerLift(0.5);
-        else
-            robot.reversePullBois.powerLift(0);
-    }
+
 }
