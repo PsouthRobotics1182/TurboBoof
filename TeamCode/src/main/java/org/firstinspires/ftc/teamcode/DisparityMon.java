@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import boofcv.struct.image.GrayU8;
 import lib.fine.vision.CrackedMonocle;
 
 /**
@@ -28,25 +27,7 @@ public class DisparityMon extends LinearOpMode {
         }
 
         waitForStart();
-        /*
-        GrayU8 distortedLeft = vision.getFrameAsBoof();
-        telemetry.addData("First Frame", "got");
-        telemetry.update();
 
-        telemetry.addData("Second Frame", "getting ready");
-        telemetry.update();
-        ElapsedTime runTime = new ElapsedTime();
-        runTime.reset();
-        while (runTime.milliseconds() < 5000) {
-            vision.displayCurrentFrame();
-        }
-
-        GrayU8 distortedRight = vision.getFrameAsBoof();
-        telemetry.addData("Second Frame", "got");
-        telemetry.update();
-
-
-        vision.displayBitmap(vision.stereoProcess(distortedLeft, distortedRight));*/
         Mat distortedLeft = vision.getFramAsMat();
         Imgproc.cvtColor(distortedLeft, distortedLeft, Imgproc.COLOR_BGR2GRAY);
         telemetry.addData("First Frame", "got");
