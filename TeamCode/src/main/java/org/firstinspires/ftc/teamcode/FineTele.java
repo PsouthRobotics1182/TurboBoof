@@ -13,27 +13,20 @@ import lib.fine.systems.SpeedyBot;
 /**
  * Created by drew on 11/23/17.
  */
-@TeleOp(name = "TeleOperations v2.45423")
+@TeleOp(name = "TeleOperations v3.45423")
 public class FineTele extends LinearOpMode {
-    SpeedyBot robot;
+    FineBot robot;
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new SpeedyBot(this, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.lift.grabTop(0.1);
-        robot.lift.grabBottom(0.3);
-        //robot.juulHitler.up();
-        //robot.juulHitler.middle();
+        robot = new FineBot(this, DcMotor.RunMode.RUN_WITHOUT_ENCODER, Color.RED);
+
         telemetry.addData("Ready", null);
         telemetry.update();
         waitForStart();
         while (opModeIsActive()) {
             driveTrain();
-            goodSucc();
-            //juulHitler();
-            //robot.fishinPol.setPower(gamepad2.left_stick_y);
-            //robot.juulHitler.addTelemetry();
 
-            //telemetry.update();
+            lift();
         }
     }
 
@@ -58,17 +51,20 @@ public class FineTele extends LinearOpMode {
         robot.drive.setCrossPower(crossPower);
     }
 
-    private void goodSucc() {
-        double leftPower = gamepad2.left_trigger;
-        double rightPower = gamepad2.right_trigger;
-        if (gamepad2.right_bumper)
-            rightPower = -1;
+
+    double sensitivity = 0.3;
+    private void lift() {
+        robot.lift.lift(-gamepad2.right_stick_y);
+
+        if (gamepad2.left_trigger > sensitivity)
+            robot.lift.grabBottom(0.3);
+        else if (gamepad2.right_trigger > sensitivity)
+            robot.lift.grabBottom(1);
+
         if (gamepad2.left_bumper)
-            leftPower = -1;
-
-        robot.suckyBois.setLeftPower(leftPower);
-        robot.suckyBois.setRightPower(rightPower);
+            robot.lift.grabTop(0.1);
+        else if (gamepad2.right_bumper)
+            robot.lift.grabTop(1);
     }
-
 
 }

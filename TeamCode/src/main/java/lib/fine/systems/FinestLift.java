@@ -31,7 +31,7 @@ public class FinestLift {
     public static final double STAY_POWER = 0.0011;
 
     public FinestLift(LinearOpMode opMode, DcMotor.RunMode mode) {
-        lift = new FineMotor(opMode, "arm");
+        lift = new FineMotor(opMode, "lift");
         rightGrasper = opMode.hardwareMap.get(Servo.class, "leftGrasp");
         leftGrasper = opMode.hardwareMap.get(Servo.class, "rightGrasp");
         leftGrasperTop = opMode.hardwareMap.get(Servo.class, "leftGraspTop");

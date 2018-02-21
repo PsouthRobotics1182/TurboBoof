@@ -12,15 +12,16 @@ import lib.fine.core.FineIMU;
 
 public class SpeedyBot {
     public FineSlide drive;
-    public FinestLift lift;
+    public Flipper lift;
     public SuckyBois suckyBois;
+
     private LinearOpMode opMode;
     private ElapsedTime runTime;
 
 
     public SpeedyBot(LinearOpMode opMode, DcMotor.RunMode mode) {
         drive = new FineSlide(opMode, mode);
-        lift = new FinestLift(opMode, DcMotor.RunMode.RUN_USING_ENCODER);
+        lift = new Flipper(opMode);
         suckyBois = new SuckyBois(opMode);
         runTime = new ElapsedTime();
 
