@@ -26,8 +26,8 @@ public class SpeedyBot {
         runTime = new ElapsedTime();
 
         drive.setMode(FineIMU.Mode.OFF_PAD);
-        //juulHitler.up();
-        //juulHitler.middle();
+        //juulHittererer.up();
+        //juulHittererer.middle();
 
         this.opMode = opMode;
     }

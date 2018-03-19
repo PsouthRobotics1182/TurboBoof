@@ -54,14 +54,17 @@ public class FineSlide {
         leftFront.setPower(power);
         leftRear.setPower(power);
     }
+
     public void setRightPower(double power) {
         rightFront.setPower(power);
         rightRear.setPower(power);
     }
+
     public void setFrontPower(double power) {
         leftFront.setPower(power);
         rightFront.setPower(power);
     }
+
     public void setRearPower(double power) {
         leftRear.setPower(power);
         rightRear.setPower(power);
@@ -70,6 +73,7 @@ public class FineSlide {
         setLeftPower(power);
         setRightPower(power);
     }
+
     public void setCrossPower(double power) {
         cross.setPower(power);
     }
@@ -90,6 +94,16 @@ public class FineSlide {
             //double correction = imu.correction(0);
             setRightPower(power+correction);//-correction);
             setLeftPower(power-correction);//+correction);
+            return true;
+        } else {
+            imu.resetPID();
+            return false;
+        }
+    }
+    public boolean drivingForwardNoGyro(int mm, double power) {
+        if (Math.abs(Math.abs(getPositionAve())) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {            //double correction = imu.correction(0);
+            setRightPower(power);//-correction);
+            setLeftPower(power);//+correction);
             return true;
         } else {
             imu.resetPID();
@@ -122,6 +136,7 @@ public class FineSlide {
             return false;
         }
     }
+
 
     public void driveForward(int mm, double power) {
         resetEncoders();
@@ -232,8 +247,9 @@ public class FineSlide {
     public boolean rotating(double angle, double maxPower) {
         if (Math.abs(imu.getHeading() - angle) > ANGLE_TOLERENCE && opMode.opModeIsActive()) {
             double correction = imu.align(angle);
-            if (Math.abs(correction) > maxPower)
-                correction = maxPower * correction / Math.abs(correction);
+            final double correction_abs = Math.abs(correction);
+            correction = (correction_abs > maxPower) ? maxPower * correction / correction_abs : correction;
+
             opMode.telemetry.clearAll();
             opMode.telemetry.addData("Correction", correction);
             opMode.telemetry.update();
@@ -274,50 +290,46 @@ public class FineSlide {
     public void drive(double driveHeading, double magnitude) {
         //double angleAdjust = imu.correction(faceAngle);
         //double orientedAngle = driveHeading - faceAngle;
-        double yComp = magnitude * Math.sin(driveHeading);
+        final double yComp = magnitude * Math.sin(driveHeading);
         double xComp = magnitude * Math.cos(driveHeading);
         double leftComp = yComp;
         double rightComp = yComp;
-        double max = Math.max(xComp, leftComp);
-        max = Math.max(max, rightComp);
+
+        final double max = Math.max(Math.max(xComp, leftComp), rightComp);
 
         if (max > 1) {
-            leftComp = leftComp/max;
-            rightComp = rightComp/max;
-            xComp = xComp/max;
+            leftComp /= max;
+            rightComp /= max;
+            xComp /= max;
         }
+
         setLeftPower(leftComp);
         setRightPower(rightComp);
         setCrossPower(xComp);
     }
 
     public int getPositionMin() {
-        int p1 = leftRear.getCurrentPosition();
-        int p2 = rightRear.getCurrentPosition();
-        int p3 = leftFront.getCurrentPosition();
-        int p4 = rightFront.getCurrentPosition();
-        int min = Math.min(p1, p2);
-        int min2 = Math.min(p3, p4);
-        min = Math.min(min, min2);
-        return min;
+        final int p1 = leftRear.getCurrentPosition();
+        final int p2 = rightRear.getCurrentPosition();
+        final int p3 = leftFront.getCurrentPosition();
+        final int p4 = rightFront.getCurrentPosition();
+        return Math.min(Math.min(Math.min(p1, p2), p3), p4);
     }
+
     public int getPositionAve() {
-        int p1 = leftRear.getCurrentPosition();
-        int p2 = rightRear.getCurrentPosition();
-        int p3 = leftFront.getCurrentPosition();
-        int p4 = rightFront.getCurrentPosition();
-        return (p1 + p2 + p3 + p4)/4;
+        final int p1 = leftRear.getCurrentPosition();
+        final int p2 = rightRear.getCurrentPosition();
+        final int p3 = leftFront.getCurrentPosition();
+        final int p4 = rightFront.getCurrentPosition();
+        return (p1 + p2 + p3 + p4) / 4;
     }
 
     public int getPositionMax() {
-        int p1 = leftRear.getCurrentPosition();
-        int p2 = rightRear.getCurrentPosition();
-        int p3 = leftFront.getCurrentPosition();
-        int p4 = rightFront.getCurrentPosition();
-        int min = Math.max(p1, p2);
-        int min2 = Math.max(p3, p4);
-        min = Math.max(min, min2);
-        return min;
+        final int p1 = leftRear.getCurrentPosition();
+        final int p2 = rightRear.getCurrentPosition();
+        final int p3 = leftFront.getCurrentPosition();
+        final int p4 = rightFront.getCurrentPosition();
+        return Math.max(Math.max(Math.max(p1, p2), p3), p4);
     }
 
     public void setMode(FineIMU.Mode mode) {
@@ -342,24 +354,20 @@ public class FineSlide {
     public void resetAngle() {
         imu.resetAngle();
     }
+
     private void forward(boolean t) {
-        if (t) {
-            leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-            leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
-            rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-            rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
-            cross.setDirection(DcMotorSimple.Direction.FORWARD);
-        }
-        else {
-            leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-            leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
-            rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-            rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-            cross.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
+        final DcMotorSimple.Direction l = (t) ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD;
+        final DcMotorSimple.Direction r = (t) ? DcMotorSimple.Direction.FORWARD : DcMotorSimple.Direction.REVERSE;
+        final DcMotorSimple.Direction x = r;
+        leftFront.setDirection(l);
+        leftRear.setDirection(l);
+        rightFront.setDirection(r);
+        rightRear.setDirection(r);
+        cross.setDirection(x);
     }
+
     public int MM2ticks(double mm) {
-        final int circ =(int) (Math.PI  * 90);
+        final int circ = (int) (Math.PI  * 90);
         final double tickperrev = 288 * 0.5;
         final double rotations = mm/circ;
         final double ticks = tickperrev * rotations;

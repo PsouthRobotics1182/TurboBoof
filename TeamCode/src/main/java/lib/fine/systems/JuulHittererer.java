@@ -10,9 +10,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by drew on 11/24/17.
  */
 
-public class JuulHitler {
+public class JuulHittererer {
     private Servo juul;
     private Servo swingyBoi;
+    private Servo pivot;
     private ColorSensor colorSensor;
     private LinearOpMode opMode;
 
@@ -23,12 +24,12 @@ public class JuulHitler {
     private static final double RIGHT_POSITION = 0.7;
     private static final double MIDDL_POSITION = 0.57;
 
-    public JuulHitler(LinearOpMode opMode) {
+    public JuulHittererer(LinearOpMode opMode) {
         this.opMode = opMode;
-
         colorSensor = opMode.hardwareMap.get(ColorSensor.class, "color");
         juul = opMode.hardwareMap.get(Servo.class, "juul");
-        swingyBoi = opMode.hardwareMap.get(Servo.class, "side");
+        swingyBoi = opMode.hardwareMap.get(Servo.class, "swing");
+        pivot = opMode.hardwareMap.get(Servo.class, "pivot");
         colorSensor.enableLed(true);
         home();
     }
@@ -39,7 +40,7 @@ public class JuulHitler {
              : (colorDiff < -COLOR_CERTAINITY) ? Color.RED
              : Color.BLACK;
     }
-
+/*
     public void down() {
         double pos = juul.getPosition();
         while (juul.getPosition() > DOWN_POSITION && opMode.opModeIsActive()) {
@@ -118,61 +119,91 @@ public class JuulHitler {
     public boolean swingingRight() {
         swingyBoi.setPosition(swingyBoi.getPosition() + 0.02);
         return swingyBoi.getPosition() > RIGHT_POSITION && opMode.opModeIsActive();
+    }*/
+    public void left() {
+        swingyBoi.setPosition(0);
+    }
+    public void right() {
+        swingyBoi.setPosition(1);
+    }
+    public void middle() {
+        swingyBoi.setPosition(0.53);
+    }
+    public void pivots(double pivotness) {
+        pivot.setPosition(pivotness);
+    }
+    public void down(double downess) {
+        juul.setPosition(1-downess);
+    }
+    public void up() {
+        juul.setPosition(1);
     }
     public void home() {
-        swingyBoi.setPosition(MIDDL_POSITION);
-        up(1);
+        up();
         right();
+        pivots(0);
+    }
+
+    private void lower() {
+        middle();
+        down(0.6);
+        opMode.sleep(500);
+        pivots(0.25);
+        opMode.sleep(500);
+        down(0.9);
+        opMode.sleep(500);
+        pivots(0.6);
+        opMode.sleep(500);
+        down(1);
+        pivots(0.68);
     }
 
     public void hitRed() {
+        lower();
 
-        forSureMiddle();
-        //down();
-        juul.setPosition((DOWN_POSITION + UP_POSTION)/2);
-        opMode.sleep(700);
-        juul.setPosition(DOWN_POSITION);
-        opMode.sleep(2000);
+        opMode.sleep(1000);
 
-        if (getColor() == Color.RED)
-            right();
-        else if (getColor() == Color.BLUE)
-            left();
-        else {
-            opMode.telemetry.addData("Not Found", null);
-            opMode.telemetry.update();
-            opMode.sleep(5000);
+        switch(getColor()) {
+            case Color.RED:
+                right();
+                break;
+            case Color.BLUE:
+                left();
+                break;
+            default:
+                opMode.telemetry.addData("Not Found", null);
+                opMode.telemetry.update();
+                opMode.sleep(1000);
+                break;
         }
-        up(0.3);
-        forSureMiddle();
-        up(1);
 
-
+        opMode.sleep(1000);
+        home();
     }
 
     public void hitBlue() {
+        lower();
 
-        forSureMiddle();
-        //down();
-        juul.setPosition((DOWN_POSITION + UP_POSTION)/2);
-        opMode.sleep(700);
-        juul.setPosition(DOWN_POSITION);
-        opMode.sleep(2000);
+        opMode.sleep(1000);
 
-        if (getColor() == Color.BLUE)
-            right();
-        else if (getColor() == Color.RED)
-            left();
-        else {
-            opMode.telemetry.addData("Not Found", null);
-            opMode.telemetry.update();
-            opMode.sleep(5000);
+        switch(getColor()) {
+            case Color.BLUE:
+                right();
+                break;
+            case Color.RED:
+                left();
+                break;
+            default:
+                opMode.telemetry.addData("Not Found", null);
+                opMode.telemetry.update();
+                opMode.sleep(1000);
+                break;
         }
-        up(0.3);
-        forSureMiddle();
-        up(1);
 
+        opMode.sleep(1000);
+        home();
     }
+
 
     public void forSureMiddle() {
         swingyBoi.setPosition(MIDDL_POSITION);

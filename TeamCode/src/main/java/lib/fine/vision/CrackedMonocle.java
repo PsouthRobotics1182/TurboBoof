@@ -53,6 +53,7 @@ import boofcv.struct.image.ImageBase;
 /**
  * Created by drew on 11/25/17.
  */
+
 @Autonomous
 public class CrackedMonocle {
     private VuforiaLocalizer vuforia;
@@ -65,8 +66,6 @@ public class CrackedMonocle {
     }
 
     public CrackedMonocle(LinearOpMode opMode, boolean display) {
-
-
         this.opMode = opMode;
         VuforiaLocalizer.Parameters parameters;
         if (display) {
@@ -92,13 +91,16 @@ public class CrackedMonocle {
         cryptoKey = keys.get(0);
         cryptoKey.setName("column"); // can help in debugging; otherwise not necessary
     }
+
     public ImageView getPreview() {
         int previewID = opMode.hardwareMap.appContext.getResources().getIdentifier("boofPreview", "id", opMode.hardwareMap.appContext.getPackageName());
         return (ImageView) ((Activity) opMode.hardwareMap.appContext).findViewById(previewID);
     }
+
     public void activate() {
         keys.activate();
     }
+
     public void deactiviate() {
         keys.deactivate();
     }
@@ -122,14 +124,17 @@ public class CrackedMonocle {
 
         displayBitmap(bMap);
     }
+
     public void displayCurrentFrame() throws InterruptedException {
         displayBitmap(getFrameAsBitmap());
     }
+
     public GrayU8 getFrameAsBoof() throws InterruptedException {
         Bitmap bm = getFrameAsBitmap();
         GrayU8 imag = ConvertBitmap.bitmapToGray(bm, null, GrayU8.class, null);
         return imag;
     }
+
     public Mat getFramAsMat() throws InterruptedException{
         Bitmap bm = getFrameAsBitmap();
         Mat right = new Mat();
@@ -158,6 +163,7 @@ public class CrackedMonocle {
 
         return bm;
     }
+
     public static CameraPinholeRadial loadIntrinsic(LinearOpMode opMode) {
         CameraPinholeRadial intrinsic = null;
         //String user = System.getProperty("user.dir");
@@ -188,7 +194,6 @@ public class CrackedMonocle {
 
         return intrinsic;//new CameraPinholeRadial();
     }
-
 
     private static final int minDisparity = 15;
     private static final int maxDisparity = 255;

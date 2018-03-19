@@ -16,17 +16,14 @@ public class Flipper {
     private Servo servo;
     private LinearOpMode opMode;
 
-
-
     public Flipper(LinearOpMode opMode) {
-        lift = new FineMotor(opMode, "lift");
+        lift = new FineMotor(opMode, "leftMotor");
         servo = opMode.hardwareMap.get(Servo.class, "flip");
 
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
         this.opMode = opMode;
-        flip(0);
-
+        flip(1);
 
     }
     public void lift(double power) {

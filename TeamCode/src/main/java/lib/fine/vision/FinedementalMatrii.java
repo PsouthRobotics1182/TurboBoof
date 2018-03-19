@@ -63,6 +63,7 @@ import boofcv.struct.image.GrayU8;
  *
  * @author Peter Abeles
  */
+
 public class FinedementalMatrii {
 
 	/**

@@ -64,32 +64,28 @@ public class FineIMU {
     public void setMode(Mode mode) {
         this.mode = mode;
     }
+
     private double kP() {
-        if (mode == Mode.ON_PAD)
-            return kP_ON_PAD;
-        else
-            return kP_OFF_PAD;
+        return (mode == Mode.ON_PAD) ? kP_ON_PAD : kP_OFF_PAD;
     }
+
     private double kI() {
-        if (mode == Mode.ON_PAD)
-            return kI_ON_PAD;
-        else
-            return kI_OFF_PAD;
+        return (mode == Mode.ON_PAD) ? kI_ON_PAD : kI_OFF_PAD;
     }
+
     private double kD() {
-        if (mode == Mode.ON_PAD)
-            return kD_ON_PAD;
-        else
-            return kD_OFF_PAD;
+        return (mode == Mode.ON_PAD) ? kD_ON_PAD : kD_OFF_PAD;
     }
 
     public double getHeading() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return angles.firstAngle - zeroPos;
     }
+
     public double getRate() {
         return imu.getAngularVelocity().zRotationRate;
     }
+
     public double[] getLevelness() {
         double[] levels = new double[2];
         levels[0] = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).secondAngle;
@@ -127,27 +123,29 @@ public class FineIMU {
         prevError = error;
         return correction;
     }*/
+
     public double align (double angle) {
         if (prevError == 0) runTime.reset();
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         final double heading = getHeading();
-        double error = angle-heading;
+        final double error = angle-heading;
         integral = integral + error * kP() *runTime.milliseconds();
-        double deravitive = (error - prevError)/runTime.milliseconds();
-        double correction = error * kP() + deravitive * kD() + integral * kI();
+        final double deravitive = (error - prevError)/runTime.milliseconds();
+        final double correction = error * kP() + deravitive * kD() + integral * kI();
         //correction = Range.clip(correction, 0, 0.3);
         prevError = error;
         runTime.reset();
         return correction;
     }
+
     public double alignTune (double angle, double p, double i, double d) {
         if (prevError == 0) runTime.reset();
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         final double heading = getHeading();
-        double error = angle-heading;
+        final double error = angle-heading;
         integral = integral + error * p * runTime.milliseconds();
-        double deravitive = (error - prevError)/runTime.milliseconds();
-        double correction = error * p + deravitive * d + integral * i;
+        final double deravitive = (error - prevError)/runTime.milliseconds();
+        final double correction = error * p + deravitive * d + integral * i;
         //correction = Range.clip(correction, 0, 0.3);
         prevError = error;
         runTime.reset();

@@ -48,4 +48,8 @@ public class FineMotor {
         opMode.telemetry.addData(name + " position", getCurrentPosition());
         opMode.telemetry.addData(name + " absolute position", getAbsolutePosition());
     }
+
+    public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior behav) {
+        motor.setZeroPowerBehavior(behav);
+    }
 }

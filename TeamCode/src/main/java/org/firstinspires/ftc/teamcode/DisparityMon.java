@@ -56,6 +56,7 @@ public class DisparityMon extends LinearOpMode {
         telemetry.update();
         ElapsedTime runTime = new ElapsedTime();
         runTime.reset();
+
         while (runTime.milliseconds() < 5000) {
             vision.displayCurrentFrame();
         }
