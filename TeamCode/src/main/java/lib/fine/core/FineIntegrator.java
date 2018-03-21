@@ -86,8 +86,9 @@ public class FineIntegrator implements BNO055IMU.AccelerationIntegrator {
                 if (parameters != null && parameters.loggingEnabled) {
                     RobotLog.vv(parameters.loggingTag, "dt=%.3fs accel=%s vel=%s pos=%s", (acceleration.acquisitionTime - accelPrev.acquisitionTime) * 1e-9, acceleration, velocity, position);
                 }
-            } else
+            } else {
                 acceleration = linearAcceleration;
+            }
         }
     }
 }

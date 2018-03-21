@@ -1,7 +1,5 @@
 package lib.fine.systems;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -16,8 +14,8 @@ public class FineBot {
     public FineSlide drive;
     public FinestLift lift;
     public BullyBoys reversePullBois;
-    public JuulHitler juulHitler;
-    public FishinPol fishinPol;
+    public JuulHittererer juulHittererer;
+    //public FishinPol fishinPol;
     private LinearOpMode opMode;
     private ElapsedTime runTime;
 
@@ -26,15 +24,15 @@ public class FineBot {
     public FineBot(LinearOpMode opMode, DcMotor.RunMode mode, int alliance) {
         drive = new FineSlide(opMode, mode);
         lift = new FinestLift(opMode, DcMotor.RunMode.RUN_USING_ENCODER);
-        fishinPol = new FishinPol(opMode, DcMotor.RunMode.RUN_USING_ENCODER);
-        juulHitler = new JuulHitler(opMode);
+        //fishinPol = new FishinPol(opMode, DcMotor.RunMode.RUN_USING_ENCODER);
+        juulHittererer = new JuulHittererer(opMode);
         reversePullBois = new BullyBoys(opMode);
 
         runTime = new ElapsedTime();
 
         drive.setMode(FineIMU.Mode.OFF_PAD);
-        //juulHitler.up();
-        //juulHitler.middle();
+        //juulHittererer.up();
+        //juulHittererer.middle();
 
         this.alliance = alliance;
         this.opMode = opMode;
@@ -56,6 +54,6 @@ public class FineBot {
     public void addTelemetry() {
         drive.addTelemetry();
         lift.addTelemetry();
-        juulHitler.addTelemetry();
+        juulHittererer.addTelemetry();
     }
 }

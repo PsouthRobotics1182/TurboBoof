@@ -20,11 +20,12 @@ public class SuckyBois {
         this.opMode = opMode;
         leftM = new FineMotor(opMode, "leftM");
         leftM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftM.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftM.setDirection(DcMotorSimple.Direction.REVERSE);
         rightM = new FineMotor(opMode, "rightM");
         rightM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightM.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightM.setDirection(DcMotorSimple.Direction.FORWARD);
     }
+
     public void setLeftPower(double leftPower) {
         leftM.setPower(leftPower);
     }

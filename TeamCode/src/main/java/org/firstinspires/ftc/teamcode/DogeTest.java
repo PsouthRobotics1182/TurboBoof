@@ -40,8 +40,6 @@ public class DogeTest extends OpMode {
         jewelDetector.minArea = 700;
 
         jewelDetector.enable();
-
-
     }
 
     @Override
@@ -69,7 +67,5 @@ public class DogeTest extends OpMode {
     @Override
     public void stop() {
         jewelDetector.disable();
-
-
     }
 }

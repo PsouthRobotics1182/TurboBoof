@@ -45,11 +45,11 @@ public class BullyBoys {
         bullyBoiReverseLowerer.setPower(power);
     }
     public void powerLift(double power) {
-        bullyBoiReverseLowerer.setPower(power);
+        bullyBoiReverseLowerer.setPower(-power);
     }
 
 /*    public void addTelemetry() {
-        lift.addTelemetry();
+        leftMotor.addTelemetry();
         opMode.telemetry.addData("left servo", leftGrasper.getPositionMin());
         opMode.telemetry.addData("right servo", rightGrasper.getPositionMin());
     }*/

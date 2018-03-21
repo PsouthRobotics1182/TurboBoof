@@ -12,17 +12,45 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import lib.fine.core.FineIMU;
 import lib.fine.vision.CrackedMonocle;
 import lib.fine.systems.FineBot;
-import lib.fine.systems.FinestLift;
 
 /**
  * Created by drew on 11/25/17.
  */
+
 @Autonomous(name = "Strawberry Juul V2.386")
 public class RedJuul extends LinearOpMode {
+
+      //////////////////////
+     // Global Variables //
+    //////////////////////
+
+    CrackedMonocle vuforia;
+    RelicRecoveryVuMark column;
+
+      //////////////////////
+     // Helper Functions //
+    //////////////////////
+
+    /**
+     * Update the current column if it is unknown.
+     */
+
+    public RelicRecoveryVuMark updateColumn() {
+        return (column == RelicRecoveryVuMark.UNKNOWN) ? vuforia.getColumn() : column;
+    }
+
+      /////////////////
+     // Main OpMode //
+    /////////////////
+
     @Override
     public void runOpMode() throws InterruptedException {
+          ////////////////////
+         // Initialization //
+        ////////////////////
+
         FineBot robot = new FineBot(this, DcMotor.RunMode.RUN_USING_ENCODER, Color.RED);
-        CrackedMonocle vuforia = new CrackedMonocle(this, true);
+        vuforia = new CrackedMonocle(this, true);
         ElapsedTime runTime = new ElapsedTime();
         vuforia.activate();
 
@@ -32,22 +60,19 @@ public class RedJuul extends LinearOpMode {
         waitForStart();
         runTime.reset();
 
-        RelicRecoveryVuMark column = vuforia.getColumn();
-
-        robot.fishinPol.rotate(1);
-
+        column = vuforia.getColumn();
         robot.lift.grabBottom(1);
         robot.lift.grabTop(1);
         robot.sleep(1000);
         robot.lift.lift(1);
-        robot.sleep(1000);
-        robot.lift.lift(FinestLift.STAY_POWER);
+        robot.sleep(500);
+        robot.lift.lift(0);
 
         robot.reversePullBois.powerLift(0.5);
         robot.sleep(500);
         robot.reversePullBois.powerLift(0);
 
-        robot.juulHitler.hitRed();
+        robot.juulHittererer.hitRed();
 
         robot.sleep(500);
         robot.reversePullBois.powerLift(-0.8);
@@ -67,9 +92,9 @@ public class RedJuul extends LinearOpMode {
         robot.drive.resetEncoders();
         runTime.reset();
         while (robot.drive.drivingForwardConserv(800, 0.6, 0)) {
-            if (column == RelicRecoveryVuMark.UNKNOWN)
-                column = vuforia.getColumn();
+            updateColumn();
         }
+
         robot.drive.stop();
 
         robot.drive.imu.setMode(FineIMU.Mode.OFF_PAD);
@@ -80,50 +105,64 @@ public class RedJuul extends LinearOpMode {
         column = vuforia.getColumn();
 
         robot.drive.setAngleTolerence(3);
+
         if (column == RelicRecoveryVuMark.UNKNOWN) {
             robot.drive.rotateNoReser(-15, 0.7);
             robot.sleep(1000);
             column = vuforia.getColumn();
         }
+
         robot.drive.rotate(0, 0.7);
 
-        if (column == RelicRecoveryVuMark.UNKNOWN)
-            column = vuforia.getColumn();
+        column = (column == RelicRecoveryVuMark.UNKNOWN) ? vuforia.getColumn() : column;
+
         telemetry.addData("Column", column);
         telemetry.update();
         //sleep(5000);
-        int mmStrafe = 660;
+        int mmBase = 480;
+        int mmStrafe = mmBase;
 
-        int mmBase = 610;
-        if (column == RelicRecoveryVuMark.UNKNOWN)
-            column = RelicRecoveryVuMark.RIGHT;
-        if (column == RelicRecoveryVuMark.RIGHT)
-            mmStrafe = mmBase;
-        else if (column == RelicRecoveryVuMark.CENTER)
-            mmStrafe = mmBase + 170;
-        else if (column == RelicRecoveryVuMark.LEFT)
-            mmStrafe = mmBase + 190 + 190;
+        switch(column) {
+            case CENTER:
+                mmStrafe = mmBase + 160;
+                break;
+            case UNKNOWN: // Fall-Through to Right
+                column = RelicRecoveryVuMark.RIGHT;
+            case RIGHT:
+                mmStrafe = mmBase + 160 + 160;
+                break;
+            case LEFT:
+                mmStrafe = mmBase;
+                break;
+        }
 
-        robot.drive.strafeRange(mmStrafe, 0.8);
-
-        robot.lift.lift(0);
-
-        robot.lift.leftSwingBottom(0.8);
-
-        double currentPos = robot.drive.getRange();
+        runTime.reset();
         robot.drive.resetEncoders();
-        while (robot.drive.strafingRight((int) currentPos-90, 1)) {
+        while (robot.drive.strafingRange(mmStrafe, 0.8) && runTime.milliseconds() < 7000) {
             idle();
         }
         robot.drive.stop();
+        //robot.drive.strafeRange(mmStrafe, 0.8);
 
-        robot.lift.leftSwingBottom(1);
+        //robot.leftMotor.leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        robot.lift.grabBottom(0);
+
+
         robot.drive.resetEncoders();
         while (robot.drive.drivingForwardConserv(180, 1, 0)) {
             idle();
         }
         robot.drive.stop();
+
+        robot.drive.driveBackward(100, 1);
+
+        robot.lift.grabBottom(1);
+        robot.sleep(1000);
         robot.drive.resetEncoders();
+        while (robot.drive.drivingForwardConserv(120, 1, 0)) {
+            idle();
+        }
 
         robot.drive.driveBackward(200, 1);
 
@@ -132,7 +171,7 @@ public class RedJuul extends LinearOpMode {
         robot.reversePullBois.powerLift(0);
         robot.lift.grabTop(0.1);
         robot.lift.grabBottom(0.3);
-        robot.fishinPol.rotate(0);
+        //robot.fishinPol.rotate(0);
         robot.sleep(500);
     }
 }
