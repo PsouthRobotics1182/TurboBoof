@@ -23,17 +23,17 @@ public class NewBot extends LinearOpMode {
 
         telemetry.addData("Ready", null);
         telemetry.update();
-        CRServo vex = hardwareMap.get(CRServo.class, "vex");
+        //CRServo vex = hardwareMap.get(CRServo.class, "vex");
 
         waitForStart();
         while (opModeIsActive()) {
             driveTrain();
             intake();
             lift();
-            double vexP = gamepad2.left_stick_y;
-            telemetry.addData("vex P", vexP);
+            //double vexP = gamepad2.left_stick_y;
+            //telemetry.addData("vex P", vexP);
             telemetry.update();
-            vex.setPower(vexP * 0.9);
+            //vex.setPower(vexP * 0.9);
 
         }
     }
