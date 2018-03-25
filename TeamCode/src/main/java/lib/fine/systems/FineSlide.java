@@ -28,6 +28,11 @@ public class FineSlide {
 
     private static int ANGLE_TOLERENCE = 1;
 
+    public static final int WHEEL_RADIUS_MM = 90;
+    public static final int WHEEL_CIRCUMFRENCE = (int) (Math.PI  * WHEEL_RADIUS_MM);
+    public static final double CHASSIS_WHEEL_SPACING_MM = 16 * 2.54; //mm
+
+
     public FineSlide(LinearOpMode opMode, DcMotor.RunMode mode) {
         this.opMode = opMode;
         leftFront = new FineMotor(opMode, "leftF");
@@ -308,6 +313,13 @@ public class FineSlide {
         setCrossPower(xComp);
     }
 
+    public int getPositionLeft() {
+        return (leftFront.getCurrentPosition() + leftRear.getCurrentPosition())/2;
+    }
+    public int getPositionRight() {
+        return (rightFront.getCurrentPosition() + rightRear.getCurrentPosition())/2;
+    }
+
     public int getPositionMin() {
         final int p1 = leftRear.getCurrentPosition();
         final int p2 = rightRear.getCurrentPosition();
@@ -367,11 +379,41 @@ public class FineSlide {
     }
 
     public int MM2ticks(double mm) {
-        final int circ = (int) (Math.PI  * 90);
-        final double tickperrev = 288 * 0.5;
-        final double rotations = mm/circ;
-        final double ticks = tickperrev * rotations;
+
+        final double rotations = mm/ WHEEL_CIRCUMFRENCE;
+        final double ticks = leftRear.getTicksPerRev() * rotations;
         return (int) ticks;
+    }
+    public double ticks2MM(double ticks) {
+
+        double rotations = ticks / leftRear.getTicksPerRev();
+        double mm = rotations * WHEEL_CIRCUMFRENCE;
+        return mm;
+
+    }
+
+    //LOG HELPER FUNCTIONS
+    double robotAverageTravelSpeed = 200;//in ticks/sec
+    private double time(double targetDistance) {//predicts time to travel based on distance
+        return targetDistance/robotAverageTravelSpeed;
+    }
+
+    double c = 7.3;//constant to scale the predicted time to the k value
+    private double k(double time) {
+        return (1/time) * c;
+    }
+    //gives velocity in ticks/sec for robot pos to follow log curve
+    private double logVelocity(double currentPos, double targetPos) {
+        double velocity = k(time(targetPos)) * currentPos;
+        velocity = velocity * (1 - (currentPos/targetPos));
+        return velocity;
+    }
+    //converts velocity to power so peak planned velocity is 1
+    private double logPower(double currentPos, double targetPos) {
+        //get desired speed and shift horizontally so the beggining of the curve is at 0 ticks
+        double desiredSpeed = logVelocity(currentPos - time(targetPos), targetPos);
+        double power = desiredSpeed/logVelocity(0, targetPos);//scale speed based on max planned speed
+        return power;
     }
 
     public void addTelemetry() {
