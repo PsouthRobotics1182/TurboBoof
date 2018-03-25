@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import lib.fine.systems.FineBot;
+import lib.fine.systems.Flipper;
 import lib.fine.systems.SpeedyBot;
 
 /**
@@ -23,25 +24,21 @@ public class NewBot extends LinearOpMode {
 
         telemetry.addData("Ready", null);
         telemetry.update();
-        //CRServo vex = hardwareMap.get(CRServo.class, "vex");
 
         waitForStart();
         while (opModeIsActive()) {
+
             driveTrain();
             intake();
             lift();
-            //double vexP = gamepad2.left_stick_y;
-            //telemetry.addData("vex P", vexP);
-            telemetry.update();
-            //vex.setPower(vexP * 0.9);
 
+            telemetry.update();
         }
     }
 
     private void driveTrain() {
-        double correction = (gamepad1.a) ? robot.drive.imu.align(0) : 0;
 
-        telemetry.addData("Correction", correction);
+        double correction = (gamepad1.a) ? robot.drive.imu.align(0) : 0;
 
         robot.drive.setLeftPower(-gamepad1.left_stick_y-correction);
         robot.drive.setRightPower(-gamepad1.right_stick_y+correction);
@@ -50,7 +47,9 @@ public class NewBot extends LinearOpMode {
 
         robot.drive.setCrossPower(crossPower);
     }
+
     private void intake() {
+
         if (gamepad2.left_bumper)
             robot.suckyBois.setLeftPower(-1);
         else
@@ -63,19 +62,27 @@ public class NewBot extends LinearOpMode {
 
     }
 
-
-    final double sensitivity = 0.3;
-
     private void lift() {
-        robot.lift.lift(-gamepad2.right_stick_y);
-        if (gamepad2.a)
-            robot.lift.flip(1);//intake
-        else if (gamepad2.b)
-            robot.lift.flip(0);//dump
-        else if (gamepad2.x)
-            robot.lift.flip(0.8);//horizontal
-        else if (gamepad2.y)
-            robot.lift.flip(0.45);
+
+        robot.lift.lift(-gamepad2.right_stick_y);//powers the 4 seros
+
+
+        //DO NOT CHANGE ORDER OF THESE STATEMENTS
+        //THEY ARE IN THIS ORDER TO PRIORITIZE DRIVER CONTROLS OVER AUTOMATED ONES
+        if (robot.lift.atBottom())
+            robot.lift.flip(Flipper.INTAKE);
+        else if (!robot.lift.atBottom() && !robot.lift.atTop())
+            robot.lift.flip(Flipper.HORIZONTAL);
+
+        if (gamepad2.dpad_up)
+            robot.lift.flip(Flipper.VERTICAL);
+        else if (gamepad2.dpad_right)
+            robot.lift.flip(Flipper.HORIZONTAL);
+        else if (gamepad2.dpad_left)
+            robot.lift.flip(Flipper.OVER_DUMP);
+        else if (gamepad2.dpad_down)
+            robot.lift.flip(Flipper.INTAKE);
+
     }
 
 
