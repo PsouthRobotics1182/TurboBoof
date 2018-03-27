@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldOpModes;
 
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,8 @@ import lib.fine.systems.FineBot;
 /**
  * Created by drew on 11/23/17.
  */
+@Disabled
+
 @TeleOp(name = "TeleOperations v3.45423")
 public class FineTele extends LinearOpMode {
     FineBot robot;

@@ -32,4 +32,8 @@ public class SuckyBois {
     public void setRightPower(double rightPower) {
         rightM.setPower(rightPower);
     }
+    public void setPower(double power) {
+        setLeftPower(power);
+        setRightPower(power);
+    }
 }

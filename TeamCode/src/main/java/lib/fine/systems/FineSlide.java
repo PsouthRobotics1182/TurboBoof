@@ -269,6 +269,7 @@ public class FineSlide {
         }
     }
 
+    //positive is left
     public void rotating(double maxPower) {
         setLeftPower(-maxPower);
         setRightPower(maxPower);

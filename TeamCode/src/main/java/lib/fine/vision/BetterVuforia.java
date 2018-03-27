@@ -55,7 +55,7 @@ import boofcv.struct.image.ImageBase;
  */
 
 @Autonomous
-public class CrackedMonocle {
+public class BetterVuforia {
     private VuforiaLocalizer vuforia;
     private VuforiaTrackables keys;
     private VuforiaTrackable cryptoKey;
@@ -65,7 +65,7 @@ public class CrackedMonocle {
         System.loadLibrary("opencv_java3");
     }
 
-    public CrackedMonocle(LinearOpMode opMode, boolean display) {
+    public BetterVuforia(LinearOpMode opMode, boolean display) {
         this.opMode = opMode;
         VuforiaLocalizer.Parameters parameters;
         if (display) {

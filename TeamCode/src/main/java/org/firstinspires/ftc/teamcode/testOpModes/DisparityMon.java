@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testOpModes;
 
 import android.graphics.Bitmap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,16 +10,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import lib.fine.vision.CrackedMonocle;
+import lib.fine.vision.BetterVuforia;
 
 /**
  * Created by drew on 2/4/18.
  */
 @TeleOp
+@Disabled
+
 public class DisparityMon extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        CrackedMonocle vision = new CrackedMonocle(this, false);
+        BetterVuforia vision = new BetterVuforia(this, false);
 
         vision.activate();
 

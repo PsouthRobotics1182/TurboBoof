@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldOpModes;
 
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,12 +11,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import lib.fine.core.FineIMU;
-import lib.fine.vision.CrackedMonocle;
+import lib.fine.vision.BetterVuforia;
 import lib.fine.systems.FineBot;
 
 /**
  * Created by drew on 11/25/17.
  */
+@Disabled
 
 @Autonomous(name = "Strawberry Juul V2.386")
 public class RedJuul extends LinearOpMode {
@@ -24,7 +26,7 @@ public class RedJuul extends LinearOpMode {
      // Global Variables //
     //////////////////////
 
-    CrackedMonocle vuforia;
+    BetterVuforia vuforia;
     RelicRecoveryVuMark column;
 
       //////////////////////
@@ -50,7 +52,7 @@ public class RedJuul extends LinearOpMode {
         ////////////////////
 
         FineBot robot = new FineBot(this, DcMotor.RunMode.RUN_USING_ENCODER, Color.RED);
-        vuforia = new CrackedMonocle(this, true);
+        vuforia = new BetterVuforia(this, true);
         ElapsedTime runTime = new ElapsedTime();
         vuforia.activate();
 
