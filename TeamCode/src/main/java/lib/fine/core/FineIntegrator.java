@@ -13,10 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.meanIntegrate;
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.plus;
 /**
- * Created by drew on 11/23/17.
+ * Basically ignore this as it doesn't work
  */
-
-
 public class FineIntegrator implements BNO055IMU.AccelerationIntegrator {
     //------------------------------------------------------------------------------------------
     // State

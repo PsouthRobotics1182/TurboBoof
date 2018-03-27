@@ -16,34 +16,31 @@ public class SpeedyBot {
     public SuckyBois suckyBois;
 
     private LinearOpMode opMode;
-    private ElapsedTime runTime;
 
-
+    //runmode is whether to use encoders or not
     public SpeedyBot(LinearOpMode opMode, DcMotor.RunMode mode) {
         drive = new FineSlide(opMode, mode);
         lift = new Flipper(opMode);
         suckyBois = new SuckyBois(opMode);
-        runTime = new ElapsedTime();
 
         drive.setMode(FineIMU.Mode.OFF_PAD);
-        //juulHittererer.up();
-        //juulHittererer.middle();
 
         this.opMode = opMode;
     }
 
-
     private void resetTimer() {
-        runTime.reset();
     }
 
     public void sleep(int ms) {
-        resetTimer();
+        ElapsedTime runTime = new ElapsedTime();
+        runTime.reset();
+
         while (runTime.milliseconds() < ms && opMode.opModeIsActive()) {
             opMode.telemetry.addData("Time", runTime.milliseconds() + "/" + ms);
             opMode.telemetry.update();
             opMode.idle();
         }
+
     }
     public void addTelemetry() {
         drive.addTelemetry();

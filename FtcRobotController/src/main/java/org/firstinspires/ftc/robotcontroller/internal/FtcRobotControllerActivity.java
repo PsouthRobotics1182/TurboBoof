@@ -492,6 +492,10 @@ public class FtcRobotControllerActivity extends Activity
       startActivity(intent);
       return true;
     }
+    else if (id == R.id.action_calibrate) {
+      Intent intent = new Intent(AppUtil.getDefContext(), CameraCalibrationActivity.class);
+      startActivity(intent);
+    }
     else if (id == R.id.action_exit_app) {
       finish();
       return true;

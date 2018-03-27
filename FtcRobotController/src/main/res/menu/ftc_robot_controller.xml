@@ -69,5 +69,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     android:orderInCategory="1000"
     android:icon="@android:drawable/ic_menu_info_details"
     android:title="@string/exit_menu_item"/>
+  <item
+      android:id="@+id/action_calibrate"
+      android:orderInCategory="10001"
+      android:icon="@android:drawable/ic_menu_info_details"
+      android:title="Calibrate"/>
+
 
 </menu>
