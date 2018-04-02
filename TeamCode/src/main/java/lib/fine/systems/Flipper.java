@@ -49,9 +49,9 @@ public class Flipper {
 
     }
     public void lift(double power) {
-        if (power > 0 && atTop())
+        if (power >= 0 && atTop())
             power = 0;
-        else if (power < 0 && atBottom())
+        else if (power <= 0 && atBottom())
             power = 0;
         setPower(power);
 

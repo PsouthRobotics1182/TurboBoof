@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.currentOpModes;
 
 import android.graphics.Color;
 
@@ -32,6 +32,11 @@ public class NewBot extends LinearOpMode {
             intake();
             lift();
 
+            if (gamepad2.a)
+                robot.suckyBois.boot(1);
+            else if (gamepad2.b)
+                robot.suckyBois.boot(0.5);
+
             telemetry.update();
         }
     }
@@ -52,19 +57,26 @@ public class NewBot extends LinearOpMode {
 
         if (gamepad2.left_bumper)
             robot.suckyBois.setLeftPower(-1);
-        else
+        else if (gamepad2.left_trigger > 0.1){
+            robot.suckyBois.boot(0.5);
             robot.suckyBois.setLeftPower(gamepad2.left_trigger);
+        }else
+            robot.suckyBois.setLeftPower(0);
 
         if (gamepad2.right_bumper)
             robot.suckyBois.setRightPower(-1);
-        else
+        else if (gamepad2.right_trigger > 0.1){
             robot.suckyBois.setRightPower(gamepad2.right_trigger);
+            robot.suckyBois.boot(0.5);
+        } else
+            robot.suckyBois.setRightPower(0);
 
     }
 
     private void lift() {
+        double liftPower = -gamepad2.right_stick_y;
+        robot.lift.lift(liftPower);//powers the 4 servos
 
-        robot.lift.lift(-gamepad2.right_stick_y);//powers the 4 seros
 
 
         //DO NOT CHANGE ORDER OF THESE STATEMENTS

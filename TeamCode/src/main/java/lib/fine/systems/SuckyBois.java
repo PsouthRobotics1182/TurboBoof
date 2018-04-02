@@ -3,6 +3,7 @@ package lib.fine.systems;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import lib.fine.core.FineMotor;
 
@@ -15,6 +16,7 @@ public class SuckyBois {
     private LinearOpMode opMode;
     private FineMotor leftM;
     private FineMotor rightM;
+    private Servo boot;
 
     public SuckyBois(LinearOpMode opMode) {
         this.opMode = opMode;
@@ -24,6 +26,8 @@ public class SuckyBois {
         rightM = new FineMotor(opMode, "rightM");
         rightM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightM.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        boot = opMode.hardwareMap.get(Servo.class, "boot");
     }
 
     public void setLeftPower(double leftPower) {
@@ -35,5 +39,9 @@ public class SuckyBois {
     public void setPower(double power) {
         setLeftPower(power);
         setRightPower(power);
+    }
+
+    public void boot(double bootiness) {
+        boot.setPosition(bootiness);
     }
 }

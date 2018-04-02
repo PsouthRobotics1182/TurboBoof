@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.currentOpModes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,7 +13,7 @@ import lib.fine.vision.BetterVuforia;
 /**
  * Created by drew on 3/26/18.
  */
-
+@Autonomous(name="red")
 public class RedJuulNear extends LinearOpMode {
 
     @Override

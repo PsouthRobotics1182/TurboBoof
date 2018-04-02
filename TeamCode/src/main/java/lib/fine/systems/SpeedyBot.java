@@ -18,14 +18,14 @@ public class SpeedyBot {
 
     private LinearOpMode opMode;
 
-    public static final int DRIVE_OFF_DISTANCE = 780;
+    public static final int DRIVE_OFF_DISTANCE = 760;
 
     //runmode is whether to use encoders or not
     public SpeedyBot(LinearOpMode opMode, DcMotor.RunMode mode) {
         drive = new FineSlide(opMode, mode);
         lift = new Flipper(opMode);
         suckyBois = new SuckyBois(opMode);
-
+        juulHittererer = new JuulHittererer(opMode);
         drive.setMode(FineIMU.Mode.OFF_PAD);
 
         this.opMode = opMode;
@@ -40,7 +40,7 @@ public class SpeedyBot {
         }
         drive.stop();
 
-        drive.driveBackward(200, 1);
+        drive.driveBackward(100, 1);
 
         suckyBois.setPower(0);
 
