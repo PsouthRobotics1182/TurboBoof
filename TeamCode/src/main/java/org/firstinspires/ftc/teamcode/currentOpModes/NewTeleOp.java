@@ -12,7 +12,7 @@ import lib.fine.systems.SpeedyBot;
  * tele-op for the new robot
  */
 @TeleOp(name = "TeleOperations v4.45523")
-public class NewBot extends LinearOpMode {
+public class NewTeleOp extends LinearOpMode {
     SpeedyBot robot;
 
     @Override
@@ -89,7 +89,6 @@ public class NewBot extends LinearOpMode {
             robot.lift.flip(Flipper.OVER_DUMP);
         else if (gamepad2.dpad_down)
             robot.lift.flip(Flipper.INTAKE);
-
     }
 
 }
