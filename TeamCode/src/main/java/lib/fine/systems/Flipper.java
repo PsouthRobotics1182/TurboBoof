@@ -64,6 +64,12 @@ public class Flipper {
         bottomRight.setPower(-power);
     }
 
+    public double getPower() {
+        double max1 = Math.max(topLeft.getPower(), topRight.getPower());
+        double max2 = Math.max(bottomLeft.getPower(), bottomRight.getPower());
+        return Math.max(max1, max2);
+    }
+
     public void flip (double flipiness) {
         flipper.setPosition(flipiness);
     }

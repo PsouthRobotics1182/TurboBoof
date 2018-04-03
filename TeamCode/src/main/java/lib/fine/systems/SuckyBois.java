@@ -41,6 +41,15 @@ public class SuckyBois {
         setRightPower(power);
     }
 
+    public double getLeftPower() {
+        return leftM.getPower();
+    }
+    public double getRightPower() {
+        return rightM.getPower();
+    }
+    public double getPower() {
+        return Math.max(leftM.getPower(), rightM.getPower());
+    }
     public void boot(double bootiness) {
         boot.setPosition(bootiness);
     }

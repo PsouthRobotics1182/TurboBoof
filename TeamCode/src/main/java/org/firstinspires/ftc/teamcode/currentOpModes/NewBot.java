@@ -1,20 +1,17 @@
 package org.firstinspires.ftc.teamcode.currentOpModes;
 
-import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import lib.fine.systems.FineBot;
 import lib.fine.systems.Flipper;
 import lib.fine.systems.SpeedyBot;
 
 /**
- * Created by drew on 11/23/17.
+ * tele-op for the new robot
  */
-@TeleOp(name = "TeleOperations v4.45423")
+@TeleOp(name = "TeleOperations v4.45523")
 public class NewBot extends LinearOpMode {
     SpeedyBot robot;
 
@@ -26,64 +23,62 @@ public class NewBot extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
+        telemetry.clearAll();
+
         while (opModeIsActive()) {
 
             driveTrain();
             intake();
             lift();
-
-            if (gamepad2.a)
-                robot.suckyBois.boot(1);
-            else if (gamepad2.b)
-                robot.suckyBois.boot(0.5);
+            boot();
 
             telemetry.update();
         }
     }
 
     private void driveTrain() {
-
+        //A button auto aligns the robot to square with the cryptobox
         double correction = (gamepad1.a) ? robot.drive.imu.align(0) : 0;
 
         robot.drive.setLeftPower(-gamepad1.left_stick_y-correction);
         robot.drive.setRightPower(-gamepad1.right_stick_y+correction);
 
+        //left and right triggers move robot side to side
         double crossPower = (gamepad1.left_trigger > 0) ? -gamepad1.left_trigger : (gamepad1.right_trigger > 0) ? gamepad1.right_trigger : 0;
 
         robot.drive.setCrossPower(crossPower);
     }
 
     private void intake() {
-
         if (gamepad2.left_bumper)
             robot.suckyBois.setLeftPower(-1);
-        else if (gamepad2.left_trigger > 0.1){
-            robot.suckyBois.boot(0.5);
+        else
             robot.suckyBois.setLeftPower(gamepad2.left_trigger);
-        }else
-            robot.suckyBois.setLeftPower(0);
 
         if (gamepad2.right_bumper)
             robot.suckyBois.setRightPower(-1);
-        else if (gamepad2.right_trigger > 0.1){
+        else
             robot.suckyBois.setRightPower(gamepad2.right_trigger);
-            robot.suckyBois.boot(0.5);
-        } else
-            robot.suckyBois.setRightPower(0);
+    }
 
+    private void boot() {
+        if (robot.suckyBois.getPower() > 0.1)
+            robot.suckyBois.boot(0.5);
+        if (gamepad2.a)
+            robot.suckyBois.boot(1);
+        else if (gamepad2.b)
+            robot.suckyBois.boot(0.5);
     }
 
     private void lift() {
-        double liftPower = -gamepad2.right_stick_y;
-        robot.lift.lift(liftPower);//powers the 4 servos
-
-
+        robot.lift.lift(-gamepad2.right_stick_y);//powers the 4 servos
 
         //DO NOT CHANGE ORDER OF THESE STATEMENTS
         //THEY ARE IN THIS ORDER TO PRIORITIZE DRIVER CONTROLS OVER AUTOMATED ONES
         if (robot.lift.atBottom())
             robot.lift.flip(Flipper.INTAKE);
-        else if (!robot.lift.atBottom() && !robot.lift.atTop())
+        //implied !robot.lift.atBottom() && since else
+        else if (!robot.lift.atTop() && robot.lift.getPower() > 0.01)
             robot.lift.flip(Flipper.HORIZONTAL);
 
         if (gamepad2.dpad_up)
@@ -96,6 +91,5 @@ public class NewBot extends LinearOpMode {
             robot.lift.flip(Flipper.INTAKE);
 
     }
-
 
 }

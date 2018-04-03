@@ -55,6 +55,14 @@ public class FineMotor {
     }
 
     /**
+     *
+     * @return power to the motor
+     */
+    public double getPower() {
+        return motor.getPower();
+    }
+
+    /**
      * resets encoder so {link #getCurrentPosition()} would return zero
      */
     public void resetEncoder() {

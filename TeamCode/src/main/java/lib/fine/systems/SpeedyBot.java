@@ -43,7 +43,6 @@ public class SpeedyBot {
         drive.driveBackward(100, 1);
 
         suckyBois.setPower(0);
-
     }
 
     public void sleep(int ms) {
