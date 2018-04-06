@@ -75,11 +75,7 @@ public class NewTeleOp extends LinearOpMode {
 
         //DO NOT CHANGE ORDER OF THESE STATEMENTS
         //THEY ARE IN THIS ORDER TO PRIORITIZE DRIVER CONTROLS OVER AUTOMATED ONES
-        if (robot.lift.atBottom())
-            robot.lift.flip(Flipper.INTAKE);
-        //implied !robot.lift.atBottom() && since else
-        else if (!robot.lift.atTop() && robot.lift.getPower() > 0.01)
-            robot.lift.flip(Flipper.HORIZONTAL);
+
 
         if (gamepad2.dpad_up)
             robot.lift.flip(Flipper.VERTICAL);
@@ -89,6 +85,11 @@ public class NewTeleOp extends LinearOpMode {
             robot.lift.flip(Flipper.OVER_DUMP);
         else if (gamepad2.dpad_down)
             robot.lift.flip(Flipper.INTAKE);
+        else if (robot.lift.atBottom())
+            robot.lift.flip(Flipper.INTAKE);
+            //implied !robot.lift.atBottom() && since else
+        else if (!robot.lift.atTop() && robot.lift.getPower() > 0.01)
+            robot.lift.flip(Flipper.HORIZONTAL);
     }
 
 }
