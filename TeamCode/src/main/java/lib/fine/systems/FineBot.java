@@ -9,7 +9,7 @@ import lib.fine.core.FineIMU;
 /**
  * Created by drew on 11/24/17.
  */
-
+@Deprecated
 public class FineBot {
     public FineSlide drive;
     public FinestLift lift;

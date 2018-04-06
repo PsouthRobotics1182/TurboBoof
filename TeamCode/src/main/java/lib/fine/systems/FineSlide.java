@@ -11,10 +11,11 @@ import lib.fine.core.FineIMU;
 import lib.fine.core.FineMotor;
 
 /**
- * Created by drew on 10/6/17.
+ * class to represent the drivetrain
  */
 
 public class FineSlide {
+
     public FineIMU imu;
     private FineMotor leftFront;
     private FineMotor rightFront;
@@ -26,13 +27,19 @@ public class FineSlide {
 
     private LinearOpMode opMode;
 
+    //how precise the turn is
     private static int ANGLE_TOLERENCE = 1;
 
     public static final int WHEEL_RADIUS_MM = 90;
     public static final int WHEEL_CIRCUMFRENCE = (int) (Math.PI  * WHEEL_RADIUS_MM);
-    public static final double CHASSIS_WHEEL_SPACING_MM = 16 * 2.54; //mm
+    //mm distance between the two sides of the drivetrain
+    public static final double CHASSIS_WHEEL_SPACING_MM = 16 * 2.54;
 
-
+    /**
+     *
+     * @param opMode opmode creating the drivetrain
+     * @param mode whether to use encoders to not
+     */
     public FineSlide(LinearOpMode opMode, DcMotor.RunMode mode) {
         this.opMode = opMode;
         leftFront = new FineMotor(opMode, "leftF");
@@ -50,49 +57,78 @@ public class FineSlide {
         cross.setMode(mode);
 
         forward(true);
-        imu.resetPID();
+        imu.resetPID();//resets PID so it is prepared for the first use
         imu.setMode(FineIMU.Mode.ON_PAD);
         resetEncoders();
     }
 
+    /**
+     * powers the two left wheels
+     * @param power scale 0-1, acts same as DcMotor.setPower()
+     */
     public void setLeftPower(double power) {
         leftFront.setPower(power);
         leftRear.setPower(power);
     }
-
+    /**
+     * powers the two right wheels
+     * @param power scale 0-1, acts same as DcMotor.setPower()
+     */
     public void setRightPower(double power) {
         rightFront.setPower(power);
         rightRear.setPower(power);
     }
-
+    /**
+     * powers the two front wheels
+     * @param power scale 0-1, acts same as DcMotor.setPower()
+     */
     public void setFrontPower(double power) {
         leftFront.setPower(power);
         rightFront.setPower(power);
     }
-
+    /**
+     * powers the two rear wheels
+     * @param power scale 0-1, acts same as DcMotor.setPower()
+     */
     public void setRearPower(double power) {
         leftRear.setPower(power);
         rightRear.setPower(power);
     }
-    public void setForwardPower(double power) {
-        setLeftPower(power);
-        setRightPower(power);
-    }
 
+    /**
+     * powers the center wheel, positive is right
+     * @param power scale 0-1, acts same as DcMotor.setPower()
+     */
     public void setCrossPower(double power) {
         cross.setPower(power);
     }
 
+    /**
+     * sets all wheels to zero power
+     */
     public void stop() {
         setLeftPower(0);
         setRightPower(0);
         setCrossPower(0);
     }
 
+    /**
+     * drives forward at a specified power for a specified distance boolean based so must be used in a while loop
+     * @param mm distance to drive
+     * @param power power to run the wheels at
+     * @return
+     */
     public boolean drivingForward(int mm, double power) {
         return drivingForward(mm, power, 0);
     }
 
+    /**
+     * drives forward at a specified power at a specified gyto heading for a specified distance boolean based so must be used in a while loop
+     * @param mm distance to drive
+     * @param power power to run the wheels at
+     * @param angle gyro heading to keep
+     * @return
+     */
     public boolean drivingForward(int mm, double power, int angle) {
         if (Math.abs(Math.abs(getPositionMin())) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {
             double correction = imu.align(angle);
@@ -105,6 +141,13 @@ public class FineSlide {
             return false;
         }
     }
+
+    /**
+     * drives forward at a specified power for a specified distance without using a gyro boolean based so must be used in a while loop
+     * @param mm distance to drive
+     * @param power power to run wheels at
+     * @return
+     */
     public boolean drivingForwardNoGyro(int mm, double power) {
         if (Math.abs(Math.abs(getPositionAve())) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {            //double correction = imu.correction(0);
             setRightPower(power);//-correction);
@@ -115,6 +158,16 @@ public class FineSlide {
             return false;
         }
     }
+
+    /**
+     * same as {@link #drivingForward(int, double, int)}
+     * but more conservative with the encoder counts
+     * as to allow for running into an obstacle
+     * @param mm
+     * @param power
+     * @param angle
+     * @return
+     */
     public boolean drivingForwardConserv(int mm, double power, int angle) {
         if (Math.abs(Math.abs(getPositionAve())) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {
             double correction = imu.align(angle);
@@ -128,6 +181,7 @@ public class FineSlide {
         }
     }
 
+    @Deprecated
     public boolean drivingForwardTillLevel(double power) {
         double[] levelness = imu.getLevelness();
         if ((levelness[0] > ANGLE_TOLERENCE || levelness[1] > ANGLE_TOLERENCE) && opMode.opModeIsActive()) {
@@ -142,7 +196,11 @@ public class FineSlide {
         }
     }
 
-
+    /**
+     * loop wrapper for {@link #drivingForward(int, double)} so it can be run with a single line
+     * @param mm distance to drive
+     * @param power power for wheels
+     */
     public void driveForward(int mm, double power) {
         resetEncoders();
         while (drivingForward(mm, power) && opMode.opModeIsActive()) {
@@ -152,6 +210,12 @@ public class FineSlide {
         stop();
     }
 
+    /**
+     * drives backward at a specified power  for a specified distance boolean based so must be used in a while loop
+     * @param mm distance to drive
+     * @param power power to run the wheels at
+     * @return
+     */
     public boolean drivingBackward(int mm, double power) {
         //forward(false);
         if (Math.abs(getPositionMin()) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {
@@ -188,7 +252,7 @@ public class FineSlide {
         }
         stop();
     }
-    //positive is left
+    //negative is left
     public boolean strafingLeft(int mm, double power) {
         power = -power;
         if (Math.abs(cross.getCurrentPosition()) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {

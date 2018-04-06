@@ -11,7 +11,7 @@ import lib.fine.core.FineMotor;
 /**
  * Created by Robotics on 12/4/2017.
  */
-
+@Deprecated
 public class BullyBoys {
     private CRServo left;
     private CRServo right;

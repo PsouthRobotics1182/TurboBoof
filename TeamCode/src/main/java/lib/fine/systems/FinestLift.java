@@ -10,7 +10,7 @@ import lib.fine.core.FineMotor;
 /**
  * Created by drew on 11/24/17.
  */
-
+@Deprecated
 public class FinestLift {
     public FineMotor leftMotor;
     public FineMotor rightMotor;
