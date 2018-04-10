@@ -11,9 +11,9 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 public class JuulHittererer {
-    private Servo juul;
-    private Servo swingyBoi;
-    private Servo pivot;
+    public Servo juul;
+    public Servo swingyBoi;
+    public Servo pivot;
     private ColorSensor colorSensor;
     private LinearOpMode opMode;
 

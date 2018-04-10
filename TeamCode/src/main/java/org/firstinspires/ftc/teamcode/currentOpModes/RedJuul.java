@@ -139,16 +139,5 @@ public class RedJuul extends LinearOpMode {
         robot.depositGlyph();
 
 
-        /*robot.sleep(1000);
-        robot.sleep(1000);
-        robot.drive.resetEncoders();
-        while (robot.drive.drivingForwardConserv(120, 1, 0)) {
-            idle();
-        }
-
-        robot.drive.driveBackward(200, 1);*/
-
-        //robot.fishinPol.rotate(0);
-        //robot.sleep(500);
     }
 }
