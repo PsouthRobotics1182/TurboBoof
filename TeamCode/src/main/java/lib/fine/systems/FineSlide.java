@@ -116,7 +116,7 @@ public class FineSlide {
      * drives forward at a specified power for a specified distance boolean based so must be used in a while loop
      * @param mm distance to drive
      * @param power power to run the wheels at
-     * @return
+     * @return whether or not the move is complete
      */
     public boolean drivingForward(int mm, double power) {
         return drivingForward(mm, power, 0);
@@ -127,7 +127,7 @@ public class FineSlide {
      * @param mm distance to drive
      * @param power power to run the wheels at
      * @param angle gyro heading to keep
-     * @return
+     * @return whether or not the move is complete
      */
     public boolean drivingForward(int mm, double power, int angle) {
         if (Math.abs(Math.abs(getPositionMin())) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {
@@ -146,7 +146,7 @@ public class FineSlide {
      * drives forward at a specified power for a specified distance without using a gyro boolean based so must be used in a while loop
      * @param mm distance to drive
      * @param power power to run wheels at
-     * @return
+     * @return whether or not the move is complete
      */
     public boolean drivingForwardNoGyro(int mm, double power) {
         if (Math.abs(Math.abs(getPositionAve())) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {            //double correction = imu.correction(0);
@@ -166,7 +166,7 @@ public class FineSlide {
      * @param mm
      * @param power
      * @param angle
-     * @return
+     * @return whether or not the move is complete
      */
     public boolean drivingForwardConserv(int mm, double power, int angle) {
         if (Math.abs(Math.abs(getPositionAve())) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {
@@ -214,7 +214,7 @@ public class FineSlide {
      * drives backward at a specified power  for a specified distance boolean based so must be used in a while loop
      * @param mm distance to drive
      * @param power power to run the wheels at
-     * @return
+     * @return whether or not the move is complete
      */
     public boolean drivingBackward(int mm, double power) {
         //forward(false);
@@ -230,6 +230,14 @@ public class FineSlide {
         }
     }
 
+    /**
+     * same as {@link #drivingBackward(int, double)}
+     * but more conservative with the encoder counts
+     * as to allow for running into an obstacle
+     * @param mm distance to drive
+     * @param power power to run the wheels at
+     * @return whether or not the move is complete
+     */
     public boolean drivingBackwardConsv(int mm, double power) {
         //forward(false);
         if (Math.abs(getPositionAve()) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {
@@ -244,6 +252,11 @@ public class FineSlide {
         }
     }
 
+    /**
+     * loop wrapper for {@link #drivingBackward(int, double)} so it can be run with a single line
+     * @param mm distance to drive
+     * @param power power for wheels
+     */
     public void driveBackward(int mm, double power) {
         resetEncoders();
         while (drivingBackward(mm, power) && opMode.opModeIsActive()) {
@@ -252,7 +265,13 @@ public class FineSlide {
         }
         stop();
     }
-    //negative is left
+
+    /**
+     * strafes a certain distance to the left
+     * @param mm how far to go
+     * @param power what power to go at (0, 1)
+     * @return whether or not the move is done
+     */
     public boolean strafingLeft(int mm, double power) {
         power = -power;
         if (Math.abs(cross.getCurrentPosition()) < Math.abs(MM2ticks(mm)) && opMode.opModeIsActive()) {
@@ -266,6 +285,12 @@ public class FineSlide {
             return false;
         }
     }
+
+    /**
+     * loop wrapper for {@link #strafingLeft(int, double)} so it can be called in one line
+     * @param mm distance to strafe
+     * @param power speed (0,1] to use
+     */
     public void strafeLeft(int mm, double power) {
         resetEncoders();
         while (strafingLeft(mm, power) && opMode.opModeIsActive()) {
@@ -275,10 +300,21 @@ public class FineSlide {
         stop();
     }
 
+    /**
+     * wraps {@link #strafingLeft(int, double)} so it will move right rather than left
+     * @param mm distance to strafe
+     * @param power speed (0,1] to use
+     * @return whether or not the move is done
+     */
     public boolean strafingRight(int mm, double power) {
         return strafingLeft(mm, -power);
     }
 
+    /**
+     * loop wrapper for {@link #strafingRight(int, double)} so it can be called in one line
+     * @param mm distance to strafe
+     * @param power speed (0,1] to use
+     */
     public void strafeRight(int mm, double power) {
         resetEncoders();
         while (strafingRight(mm, power) && opMode.opModeIsActive()) {
@@ -288,6 +324,13 @@ public class FineSlide {
         stop();
     }
 
+    /**
+     * uses {@link #strafingLeft(int, double)} and {@link #strafingRight(int, double)} )}  and {@link #range}
+     * to move a certain distance from the wall
+     * @param mm how far away from the wall to strafe too
+     * @param power how fast to move (0,1]
+     * @return whether or not the move is done
+     */
     public boolean strafingRange(int mm, double power) {
         power = -power;
         double error = mm - range.getDistance(DistanceUnit.MM);
@@ -303,7 +346,11 @@ public class FineSlide {
             return false;
         }
     }
-
+    /**
+     * loop wrapper for {@link #strafingRange(int, double)} )} so it can be called in one line
+     * @param mm distance to strafe from the wall
+     * @param power speed (0,1] to use
+     */
     public void strafeRange(int mm, double power) {
         resetEncoders();
         while (strafingRange(mm, power) && opMode.opModeIsActive()) {
@@ -313,6 +360,12 @@ public class FineSlide {
         stop();
     }
 
+    /**
+     * rotates to a certain angle using the {@link #imu}
+     * @param angle heading to turn to in degrees, negative angle is rightward
+     * @param maxPower max power to rotate at
+     * @return
+     */
     public boolean rotating(double angle, double maxPower) {
         if (Math.abs(imu.getHeading() - angle) > ANGLE_TOLERENCE && opMode.opModeIsActive()) {
             double correction = imu.align(angle);
