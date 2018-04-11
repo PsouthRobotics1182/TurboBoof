@@ -11,8 +11,8 @@ import lib.fine.systems.SpeedyBot;
 /**
  * tele-op for the new robot
  */
-@TeleOp(name = "TeleOperations v4.45523")
-public class NewTeleOp extends LinearOpMode {
+@TeleOp(name = "Test v4.45523")
+public class testTele extends LinearOpMode {
     SpeedyBot robot;
 
     @Override
@@ -28,15 +28,15 @@ public class NewTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             driveTrain();
-            intake();
+           /* intake();
             lift();
             boot();
-            fishing();
+            fishing();*/
 
-           /* if (gamepad2.b)
+            if (gamepad2.b)
                 robot.juulHittererer.hitRed();
             if (gamepad2.x)
-                robot.juulHittererer.hitBlue();*/
+                robot.juulHittererer.hitBlue();
 
             telemetry.update();
         }

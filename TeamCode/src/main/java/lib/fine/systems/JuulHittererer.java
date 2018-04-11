@@ -45,38 +45,36 @@ public class JuulHittererer {
         swingyBoi.setPosition(0);
     }
     public void right() {
-        swingyBoi.setPosition(1);
-    }
-    public void middle() {
-        swingyBoi.setPosition(0.53);
-    }
-    public void pivots(double pivotness) {
-        pivot.setPosition(pivotness);
-    }
-    public void down(double downess) {
-        juul.setPosition(1-downess);
-    }
-    public void up() {
-        juul.setPosition(1);
-    }
-    public void home() {
-        up();
-        right();
-        pivots(0);
+        swingyBoi.setPosition(0.8);
     }
 
-    private void lower() {
-        middle();
-        down(0.6);
+    public void home() {
+        pivot.setPosition(0);
+        swingyBoi.setPosition(0.062);
+        juul.setPosition(0);
         opMode.sleep(500);
-        pivots(0.25);
-        opMode.sleep(500);
-        down(0.9);
-        opMode.sleep(500);
-        pivots(0.6);
-        opMode.sleep(500);
-        down(1);
-        pivots(0.68);
+        pivot.setPosition(0);
+        swingyBoi.setPosition(0.433);
+        juul.setPosition(0);
+    }
+
+    public void lower() {
+
+
+        pivot.setPosition(0);
+        swingyBoi.setPosition(0.062);
+        juul.setPosition(0);
+
+        opMode.sleep(400);
+
+
+        pivot.setPosition(0.216);
+        swingyBoi.setPosition(0.019);
+        juul.setPosition(0.53);
+        opMode.sleep(200);
+        pivot.setPosition(0.516);
+
+
     }
 
     public void hitRed() {

@@ -13,8 +13,8 @@ import lib.fine.core.FineMotor;
 
 public class FishinPol {
     private FineMotor extender;
-    private Servo rotatar;
-    private Servo grabbar;
+    /*private Servo rotatar;
+    private Servo grabbar;*/
 
     private LinearOpMode opMode;
 
@@ -27,11 +27,11 @@ public class FishinPol {
     public FishinPol(LinearOpMode opMode, DcMotor.RunMode mode) {
         extender = new FineMotor(opMode, "pol");
 
-        grabbar = opMode.hardwareMap.get(Servo.class, "Mold");
-        rotatar = opMode.hardwareMap.get(Servo.class, "flippy");
+        /*grabbar = opMode.hardwareMap.get(Servo.class, "Mold");
+        rotatar = opMode.hardwareMap.get(Servo.class, "flippy");*/
 
-        rotatar.setPosition(DOWN);
-        grabbar.setPosition(UNGRAB);
+        //rotatar.setPosition(DOWN);
+        //grabbar.setPosition(UNGRAB);
         extender.setMode(mode);
         extender.setDirection(DcMotorSimple.Direction.FORWARD);
         this.opMode = opMode;
@@ -44,11 +44,11 @@ public class FishinPol {
     public void grab(double grabiness) {
         //leftGrasper.setPosition(LEFT_GRAB_BOTTOM * grabiness + LEFT_UNGRAB * (1-grabiness));
         //rightGrasper.setPosition(RIGHT_GRAB * grabiness + RIGHT_UNGRAB * (1-grabiness));
-        grabbar.setPosition(GRAB * grabiness + UNGRAB * (1-grabiness));
+        //grabbar.setPosition(GRAB * grabiness + UNGRAB * (1-grabiness));
     }
 
     public void rotate(double upness) {
-        rotatar.setPosition(UP * upness + DOWN * (1-upness));
+        //rotatar.setPosition(UP * upness + DOWN * (1-upness));
     }
 
     public void addTelemetry() {

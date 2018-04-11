@@ -15,6 +15,7 @@ public class SpeedyBot {
     public Flipper lift;
     public SuckyBois suckyBois;
     public JuulHittererer juulHittererer;
+    public FishinPol pol;
 
     private LinearOpMode opMode;
 
@@ -26,6 +27,7 @@ public class SpeedyBot {
         lift = new Flipper(opMode);
         suckyBois = new SuckyBois(opMode);
         juulHittererer = new JuulHittererer(opMode);
+        pol = new FishinPol(opMode, DcMotor.RunMode.RUN_USING_ENCODER);
         drive.setMode(FineIMU.Mode.OFF_PAD);
 
         this.opMode = opMode;
