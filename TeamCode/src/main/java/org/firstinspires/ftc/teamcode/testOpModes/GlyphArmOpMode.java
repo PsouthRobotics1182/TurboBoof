@@ -31,9 +31,9 @@ public class GlyphArmOpMode extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            if (gamepad2.a)
+            if (gamepad2.dpad_up)
                 pivotPos += 0.001;
-            else if (gamepad2.b)
+            else if (gamepad2.dpad_down)
                 pivotPos -= 0.001;
 
             if (pivotPos > 1)
@@ -41,17 +41,17 @@ public class GlyphArmOpMode extends LinearOpMode {
             else if (pivotPos < 0)
                 pivotPos = 0;
 
-            if (gamepad2.dpad_up)
+            if (gamepad2.dpad_left)
                 swingPos += 0.001;
-            else if (gamepad2.dpad_down)
+            else if (gamepad2.dpad_right)
                 swingPos -= 0.001;
 
             if (swingPos > 1) swingPos = 1;
             else if (swingPos < 0) swingPos = 0;
 
-            if (gamepad2.dpad_right)
+            if (gamepad2.a)
                 downPos += 0.001;
-            else if (gamepad2.dpad_left)
+            else if (gamepad2.b)
                 downPos -= 0.001;
 
             if (downPos > 1) downPos = 1;
@@ -61,11 +61,11 @@ public class GlyphArmOpMode extends LinearOpMode {
                 robot.juulHittererer.home();
             else if (gamepad2.y)
                 robot.juulHittererer.lower();
-           /* else {
+            else {
                 robot.juulHittererer.swingyBoi.setPosition(swingPos);
                 robot.juulHittererer.juul.setPosition(downPos);
                 robot.juulHittererer.pivot.setPosition(pivotPos);
-            }*/
+            }
 
 
             telemetry.addData("Pivot", pivotPos);

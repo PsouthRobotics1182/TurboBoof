@@ -18,7 +18,7 @@ import lib.fine.vision.BetterVuforia;
 /**
  * Created by drew on 11/25/17.
  */
-@Autonomous(name = "Strawberry Juul V2.386")
+@Autonomous(name = "Strawberry Juul V4.386")
 public class RedJuul extends LinearOpMode {
 
       //////////////////////
@@ -107,7 +107,7 @@ public class RedJuul extends LinearOpMode {
         telemetry.addData("Column", column);
         telemetry.update();
         //sleep(5000);
-        int mmBase = 480;
+        int mmBase = 465;
         int mmStrafe = mmBase;
 
         switch(column) {
@@ -123,6 +123,8 @@ public class RedJuul extends LinearOpMode {
                 mmStrafe = mmBase;
                 break;
         }
+
+        robot.drive.setAngleTolerence(5);
 
         runTime.reset();
         robot.drive.resetEncoders();

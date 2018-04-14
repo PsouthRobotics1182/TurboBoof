@@ -45,33 +45,46 @@ public class JuulHittererer {
         swingyBoi.setPosition(0);
     }
     public void right() {
-        swingyBoi.setPosition(0.8);
+        swingyBoi.setPosition(1);
     }
 
     public void home() {
-        pivot.setPosition(0);
-        swingyBoi.setPosition(0.062);
-        juul.setPosition(0);
+        home1();
         opMode.sleep(500);
+        home2();
+        opMode.sleep(500);
+        home3();
+
+    }
+    private void home1() {
         pivot.setPosition(0);
-        swingyBoi.setPosition(0.433);
+        swingyBoi.setPosition(0.107);
+        juul.setPosition(0.2);
+    }
+    private void home2() {
+        pivot.setPosition(0);
+        swingyBoi.setPosition(0.482);
+        juul.setPosition(0.2);
+    }
+    private void home3() {
+        pivot.setPosition(0);
+        swingyBoi.setPosition(0.482);
         juul.setPosition(0);
     }
+
 
     public void lower() {
 
 
-        pivot.setPosition(0);
-        swingyBoi.setPosition(0.062);
-        juul.setPosition(0);
+        home1();
 
         opMode.sleep(400);
 
 
         pivot.setPosition(0.216);
-        swingyBoi.setPosition(0.019);
+        swingyBoi.setPosition(0.07);
         juul.setPosition(0.53);
-        opMode.sleep(200);
+        opMode.sleep(400);
         pivot.setPosition(0.516);
 
 
@@ -84,10 +97,10 @@ public class JuulHittererer {
 
         switch(getColor()) {
             case Color.RED:
-                right();
+                left();
                 break;
             case Color.BLUE:
-                left();
+                right();
                 break;
             default:
                 opMode.telemetry.addData("Not Found", null);
@@ -95,9 +108,12 @@ public class JuulHittererer {
                 opMode.sleep(1000);
                 break;
         }
-
-        opMode.sleep(1000);
-        home();
+        opMode.sleep(700);
+        home1();
+        opMode.sleep(700);
+        home2();
+        opMode.sleep(700);
+        home3();
     }
 
     public void hitBlue() {
@@ -118,9 +134,12 @@ public class JuulHittererer {
                 opMode.sleep(1000);
                 break;
         }
-
-        opMode.sleep(1000);
-        home();
+        opMode.sleep(700);
+        home1();
+        opMode.sleep(700);
+        home2();
+        opMode.sleep(700);
+        home3();
     }
 
 

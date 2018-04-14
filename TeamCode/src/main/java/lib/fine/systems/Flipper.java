@@ -14,9 +14,12 @@ import lib.fine.core.LimitSwitch;
  * Created by drew on 11/24/17.
  */
 
+
+//Code for flipiing metal plate
 public class Flipper {
     //private FineMotor lift;
     private Servo flipper;
+    private Servo servo12;
 
     private CRServo topLeft;
     private CRServo topRight;
@@ -35,6 +38,7 @@ public class Flipper {
 
     public Flipper(LinearOpMode opMode) {
         flipper = opMode.hardwareMap.get(Servo.class, "flip");
+        servo12 = opMode.hardwareMap.get(Servo.class, "servo12");
 
         topLeft = opMode.hardwareMap.get(CRServo.class, "topLeft");
         topRight = opMode.hardwareMap.get(CRServo.class, "topRight");
@@ -46,6 +50,7 @@ public class Flipper {
 
         this.opMode = opMode;
         flip(1);
+        block();
 
     }
     public void lift(double power) {
@@ -70,6 +75,12 @@ public class Flipper {
         return Math.max(max1, max2);
     }
 
+    public void block() {
+        servo12.setPosition(0.5);
+    }
+    public void unBlock() {
+        servo12.setPosition(1);
+    }
     public void flip (double flipiness) {
         flipper.setPosition(flipiness);
     }
